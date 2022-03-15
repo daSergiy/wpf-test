@@ -1,0 +1,25 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:OvpnTest.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Width="700" Height="450"
+        x:Class="OvpnTest.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="OvpnTest">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+	<StackPanel>
+		<Label Content="OVPN FIlePath:"></Label>
+		<TextBox Text="{Binding OvpnFilePath}"></TextBox>
+
+		<Button Content="Connect" Command="{Binding TryConnectCommand}"
+				HorizontalAlignment="Center" />
+
+		<TextBlock Background="LightCyan" Text="{Binding Log}" Height="400" ScrollViewer.VerticalScrollBarVisibility="Visible"
+				   TextWrapping="Wrap"/>
+	</StackPanel>
+</Window>
