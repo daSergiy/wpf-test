@@ -3,23 +3,37 @@
         xmlns:vm="using:OvpnTest.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        Width="700" Height="450"
+        Width="700" Height="466"
         x:Class="OvpnTest.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
-        Title="OvpnTest">
+        Title="OvpnTest"
+		CanResize="False">
 
-    <Design.DataContext>
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+	<Design.DataContext>
+		<vm:MainWindowViewModel/>
+	</Design.DataContext>
+	
+	<Grid ColumnDefinitions="700" RowDefinitions="30,30,50, 346">
+		<Label Content="OVPN FIlePath:" Grid.Row="0" Grid.Column="0"></Label>
+		<TextBox Text="{Binding OvpnFilePath}" Grid.Row="1" Grid.Column="0"></TextBox>
 
-	<StackPanel>
-		<Label Content="OVPN FIlePath:"></Label>
-		<TextBox Text="{Binding OvpnFilePath}"></TextBox>
+		<Grid Grid.Row="2" Grid.Column="0"
+			  ColumnDefinitions="100,110,50,100,70,100,70,100" RowDefinitions="40">
 
-		<Button Content="Connect" Command="{Binding TryConnectCommand}"
-				HorizontalAlignment="Center" />
+			<Button Content="Connect" Command="{Binding TryConnectCommand}"
+				HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0"/>
+			<Button Content="Disconnect" Command="{Binding DisconnectCommand}"
+					HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1"  />
+			<Label Content="State:" Grid.Row="0" Grid.Column="2"/>
+			<Label Content="{Binding State}" Grid.Row="0" Grid.Column="3"/>
+			<Label Content="InBytes:" Grid.Row="0" Grid.Column="4"/>
+			<Label Content="{Binding InBytes}" Grid.Row="0" Grid.Column="5"/>
+			<Label Content="OutBytes:" Grid.Row="0" Grid.Column="6"/>
+			<Label Content="{Binding OutBytes}" Grid.Row="0" Grid.Column="7"/>
+		</Grid>
 
-		<TextBlock Background="LightCyan" Text="{Binding Log}" Height="400" ScrollViewer.VerticalScrollBarVisibility="Visible"
-				   TextWrapping="Wrap"/>
-	</StackPanel>
+		<ScrollViewer Grid.Row="3" Grid.Column="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+			<TextBlock Background="LightCyan" Text="{Binding Log}" TextWrapping="Wrap" />
+		</ScrollViewer>
+	</Grid>
 </Window>

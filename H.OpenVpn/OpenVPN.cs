@@ -177,13 +177,14 @@ public class HOpenVpn : IDisposable
 
         string folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty;
         string path = Path.Combine(folder, "OpenVPN", "openvpn.exe");
-        int port = NetworkUtilities.GetFreeTcpPort();
+        int port = 8888;//NetworkUtilities.GetFreeTcpPort();
 
         Process = Process.Start(new ProcessStartInfo(path,
             $"--config \"{ConfigPath}\" " +
-            $"--management 127.0.0.1 {port} "/* +
+            $"--management 127.0.0.1 {port} " +
+            "--verb 3 " +
             "--management-query-passwords " +
-            "--remap-usr1 SIGTERM"*/)
+            "--remap-usr1 SIGTERM")
         {
             CreateNoWindow = true,
             UseShellExecute = false,
