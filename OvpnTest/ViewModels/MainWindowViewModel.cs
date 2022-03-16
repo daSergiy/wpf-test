@@ -21,22 +21,27 @@ namespace OvpnTest.ViewModels
                 {
                     DisposeOpenVpn();
 
-                    OpenVpn = new HOpenVpn();
-                    OpenVpn.ExceptionOccurred += LogMessage<Exception>;
-                    OpenVpn.StateChanged += (obj, newState) => State = newState.ToString();
-                    OpenVpn.BytesInCountChanged += (obj, inbytes) => InBytes = inbytes;
-                    OpenVpn.BytesOutCountChanged += (obj, outBytes) => OutBytes = outBytes; ;
-                    OpenVpn.InternalStateObtained += (obj, state) =>
+                    //var openVpn = new LinuxOpenVpn();
+                    var openVpn = new WindowsOpenVpn();
+                    OpenVpn = openVpn;
+                    openVpn.Start(OvpnFilePath, null, null);
+                    //openVpn.ConsoleListener!.ExceptionOccurred += LogMessage;
+                    //openVpn.ConsoleListener!.LineReceived += LogMessage;
+                    //openVpn.ConsoleListener!.RemoteAddressRead += LogMessage;
+
+                    openVpn.ManagmentInterface!.LineReceived += LogMessage;
+                    openVpn.ManagmentInterface!.LineSent += LogMessage;
+                    openVpn.ManagmentInterface!.InternalStateObtained += (obj, state) =>
                         Log += $"> STATE: LocalIp - {state.LocalIp}; RemoteIp - {state.RemoteIp}{Environment.NewLine}";
-                    OpenVpn.LogObtained += LogMessage;
-                    OpenVpn.ConsoleLineReceived += LogMessage;
-                    OpenVpn.ManagementLineReceived += LogMessage;
-                    OpenVpn.ConsoleLineSent += LogMessage;
-                    OpenVpn.ManagementLineSent += LogMessage;
-                    OpenVpn.Start(OvpnFilePath, null, null);
-                    await OpenVpn.SubscribeByteCountAsync();
-                    await OpenVpn.SubscribeStateAsync();
-                    await OpenVpn.SubscribeLogAsync();
+                    openVpn.ManagmentInterface!.StateChanged += (obj, newState) => State = newState.ToString();
+                    openVpn.ManagmentInterface!.BytesInCountChanged += (obj, inbytes) => InBytes = inbytes;
+                    openVpn.ManagmentInterface!.BytesOutCountChanged += (obj, outBytes) => OutBytes = outBytes; ;
+                    openVpn.ManagmentInterface!.LogObtained += LogMessage;
+                    openVpn.ManagmentInterface!.ExceptionOccurred += LogMessage;
+
+                    await openVpn.ManagmentInterface!.SubscribeByteCountAsync();
+                    await openVpn.ManagmentInterface!.SubscribeStateAsync();
+                    await openVpn.ManagmentInterface!.SubscribeLogAsync();
                 }
                 catch (Exception e)
                 {
@@ -58,7 +63,7 @@ namespace OvpnTest.ViewModels
         public string Log { get; set; } = string.Empty;
 
         [Reactive]
-        private HOpenVpn? OpenVpn { get; set; }
+        private OpenVpnBase? OpenVpn { get; set; }
 
         [Reactive]
         public string State { get; set; } = string.Empty;

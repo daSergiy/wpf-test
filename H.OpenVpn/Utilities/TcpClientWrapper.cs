@@ -6,15 +6,9 @@ namespace H.OpenVpn.Utilities;
 
 public class TcpClientWrapper : IDisposable
 {
-    #region Properties
-
     public TcpClient TcpClient { get; }
 
     private TimeSpan Timeout { get; }
-
-    #endregion Properties
-
-    #region Constructors
 
     public TcpClientWrapper(TcpClient client, TimeSpan timeout)
     {
@@ -22,17 +16,14 @@ public class TcpClientWrapper : IDisposable
         Timeout = timeout;
     }
 
-    public TcpClientWrapper(TimeSpan timeout) : this(new TcpClient
-    {
-        ReceiveTimeout = (int)timeout.TotalMilliseconds,
-        SendTimeout = (int)timeout.TotalMilliseconds
-    }, timeout)
+    public TcpClientWrapper(TimeSpan timeout)
+        : this(new TcpClient
+        {
+            ReceiveTimeout = (int)timeout.TotalMilliseconds,
+            SendTimeout = (int)timeout.TotalMilliseconds
+        }, timeout)
     {
     }
-
-    #endregion Constructors
-
-    #region Public methods
 
     public void Connect(IPAddress address, int port)
     {
@@ -68,6 +59,4 @@ public class TcpClientWrapper : IDisposable
         Dispose(true);
         GC.SuppressFinalize(this);
     }
-
-    #endregion Public methods
 }

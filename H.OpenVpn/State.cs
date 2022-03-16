@@ -4,8 +4,6 @@ namespace H.OpenVpn;
 
 public class State
 {
-    #region Static methods
-
     public static State Parse(string line)
     {
         line = line ?? throw new ArgumentNullException(nameof(line));
@@ -21,9 +19,14 @@ public class State
         );
     }
 
-    #endregion Static methods
-
-    #region Properties
+    public State(DateTime time, string name, string description, string localIp, string remoteIp)
+    {
+        Time = time;
+        Name = name;
+        Description = description;
+        LocalIp = localIp;
+        RemoteIp = remoteIp;
+    }
 
     public DateTime Time { get; set; }
 
@@ -34,19 +37,4 @@ public class State
     public string LocalIp { get; set; }
 
     public string RemoteIp { get; set; }
-
-    #endregion Properties
-
-    #region Constructors
-
-    public State(DateTime time, string name, string description, string localIp, string remoteIp)
-    {
-        Time = time;
-        Name = name;
-        Description = description;
-        LocalIp = localIp;
-        RemoteIp = remoteIp;
-    }
-
-    #endregion Constructors
 }
